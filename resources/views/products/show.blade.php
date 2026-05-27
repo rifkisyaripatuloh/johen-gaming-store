@@ -74,23 +74,25 @@
                     {{ $product->name }}
                 </h1>
 
-                <!-- ACCOUNT PRICE -->
-                @if($product->type == 'sell_account')
+               @if($product->type == 'sell_account')
 
-                <div class="mt-8">
+<div class="mt-8">
 
-                    <p class="text-gray-400">
-                        Account Price
-                    </p>
+    <div class="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-purple-500/10 border border-purple-500/20">
 
-                    <h2 class="text-5xl font-black text-orange-500 mt-2">
-                        Rp {{ number_format($product->price) }}
-                    </h2>
+        <span class="text-purple-400 text-xl">
+            👑
+        </span>
 
-                </div>
+        <span class="font-semibold text-purple-300">
+            Premium Account Available
+        </span>
 
-                @endif
+    </div>
 
+</div>
+
+@endif
 
                 <!-- TOPUP PACKAGE -->
                 @if($product->type == 'topup')
@@ -175,7 +177,7 @@
                         Account Information
                     </h3>
 
-                    <div class="bg-[#121212] border border-white/5 rounded-3xl overflow-hidden">
+                <div class="bg-[#121212] border border-white/5 rounded-3xl overflow-hidden divide-y divide-white/5">
 
                         @foreach($product->attributes as $attribute)
 

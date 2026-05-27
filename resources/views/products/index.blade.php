@@ -154,9 +154,25 @@
 
                             <div>
                                 <p class="text-xs text-gray-500">Starting From</p>
-                                <h4 class="text-xl font-black text-orange-500">
-                                    Rp {{ number_format($product->price) }}
-                                </h4>
+                                <div>
+    @if($product->type === 'sell_account')
+
+        <p class="text-xs text-gray-500">Price</p>
+
+        <h4 class="text-xl font-black text-orange-500">
+            Rp {{ number_format($product->price) }}
+        </h4>
+
+    @else
+
+        <p class="text-xs text-gray-500">Packages</p>
+
+        <h4 class="text-lg font-black text-green-400">
+            Multiple Top Up Options
+        </h4>
+
+    @endif
+</div>
                             </div>
 
                             <div class="w-12 h-12 rounded-2xl bg-orange-500 hover:bg-orange-400 transition flex items-center justify-center text-lg font-bold shadow-lg shadow-orange-500/20">

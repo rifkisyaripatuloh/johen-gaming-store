@@ -233,12 +233,7 @@ function addPackage()
                 placeholder="Stock"
                 class="p-3 rounded-xl bg-black/30 border border-white/10">
 
-                 <input
-        type="number"
-        name="price"
-        placeholder="Harga akun"
-        class="w-full p-4 rounded-xl bg-black/30 border border-white/10">
-
+       
         </div>
     `;
 

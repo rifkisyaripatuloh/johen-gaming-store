@@ -14,11 +14,13 @@ class HomeController extends Controller
 
         $categories = Category::latest()->get();
 
-        $products = Product::with('category')
-            ->where('status', 'available')
-            ->latest()
-            ->take(8)
-            ->get();
+      $products = Product::with([
+    'category',
+    'attributes'
+])
+->where('status', 'available')
+->latest()
+->get();
 
         return view('home', compact(
             'banners',

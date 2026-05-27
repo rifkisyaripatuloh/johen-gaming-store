@@ -62,24 +62,7 @@
 
                     </p>
 
-                    <!-- BUTTON -->
-                    <div class="mt-10 flex flex-wrap gap-4">
-
-                        <a href="#games"
-                           class="px-8 py-4 rounded-2xl bg-orange-500 hover:bg-orange-400 transition font-bold shadow-lg shadow-orange-500/30">
-
-                            🎮 Top Up Sekarang
-
-                        </a>
-
-                        <a href="#accounts"
-                           class="px-8 py-4 rounded-2xl border border-white/20 hover:border-orange-500 hover:bg-orange-500/10 transition font-bold">
-
-                            👑 Lihat Akun Premium
-
-                        </a>
-
-                    </div>
+            >
 
                     <!-- STATS -->
                     <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -211,9 +194,15 @@
                         {{ $product->category->name ?? '-' }}
                     </p>
 
-                    <p class="text-orange-500 font-bold mt-2">
-                        Rp {{ number_format($product->price) }}
-                    </p>
+                    @if($product->type === 'sell_account')
+    <p class="text-orange-500 font-bold mt-2">
+        Rp {{ number_format($product->price) }}
+    </p>
+@else
+    <p class="text-gray-400 font-medium mt-2">
+        Multiple Packages Available
+    </p>
+@endif
 
                     <span class="inline-block mt-2 text-xs px-2 py-1 rounded bg-orange-500/20 text-orange-400">
                         {{ strtoupper($product->type) }}
@@ -280,9 +269,19 @@
 
                     <div class="mt-6 flex items-center justify-between">
 
-                        <h4 class="text-2xl font-black text-orange-500">
-                            Rp {{ number_format($product->price) }}
-                        </h4>
+                        @if($product->type === 'sell_account')
+
+    <h4 class="text-2xl font-black text-orange-500">
+        Rp {{ number_format($product->price) }}
+    </h4>
+
+@else
+
+    <h4 class="text-lg font-bold text-green-400">
+        Top Up Available
+    </h4>
+
+@endif
 
                         <a href="{{ route('products.show', $product->slug) }}"
                            class="px-5 py-2 rounded-xl bg-orange-500 hover:bg-orange-400 transition text-sm font-bold">
@@ -330,7 +329,7 @@
 
     <div class="grid lg:grid-cols-3 gap-8">
 
-        @foreach($products->where('type','account')->take(3) as $account)
+        @foreach($products->where('type','sell_account')->take(3) as $account)
 
         <a href="{{ route('products.show',$account->slug) }}"
            class="group relative overflow-hidden rounded-[32px] border border-white/10 bg-gradient-to-b from-[#171717] to-[#0F0F0F] hover:border-orange-500/40 transition duration-500 hover:-translate-y-3">
@@ -396,9 +395,19 @@
                             Starting From
                         </p>
 
-                        <h4 class="text-3xl font-black text-orange-500">
-                            Rp {{ number_format($account->price) }}
-                        </h4>
+                      @if($product->type === 'sell_account')
+
+    <h4 class="text-2xl font-black text-orange-500">
+        Rp {{ number_format($product->price) }}
+    </h4>
+
+@else
+
+    <h4 class="text-lg font-bold text-green-400">
+        Top Up Available
+    </h4>
+
+@endif
 
                     </div>
 

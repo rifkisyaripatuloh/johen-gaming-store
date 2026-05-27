@@ -94,7 +94,7 @@
 
                         <a href="/products"
                            class="hover:text-orange-400 transition duration-300">
-                            Top Up
+                            Product
                         </a>
 
                       
@@ -181,7 +181,7 @@
 
 
                <a href="{{ route('products.index') }}" class="hover:text-orange-400 transition">
-    Top Up
+    Product
 </a>
 
             </div>
@@ -243,7 +243,7 @@
                         </a>
 
                         <a href="/products" class="hover:text-orange-400 transition">
-                            Top Up
+                            Product
                         </a>
 
                     </div>
