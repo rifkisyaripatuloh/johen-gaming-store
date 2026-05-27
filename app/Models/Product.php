@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\ProductPackage;
+use App\Models\GameAttribute;
 
 class Product extends Model
 {
@@ -34,5 +36,16 @@ class Product extends Model
     public function carts()
     {
         return $this->hasMany(Cart::class);
+    }
+
+    public function packages()
+    {
+        return $this->hasMany(ProductPackage::class);
+    }
+
+    // 🔥 TAMBAHKAN INI
+    public function attributes()
+    {
+        return $this->hasMany(GameAttribute::class);
     }
 }

@@ -28,7 +28,7 @@ return new class extends Migration
 
             $table->enum('type', [
                 'topup',
-                'account'
+                'sell_account'
             ]);
 
             $table->enum('status', [
