@@ -97,7 +97,38 @@
                             Product
                         </a>
 
-                      
+                      @auth
+
+@php
+$cartCount = \App\Models\Cart::where(
+    'user_id',
+    auth()->id()
+)->count();
+@endphp
+
+<a href="{{ route('cart.index') }}"
+   class="relative w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center hover:border-orange-500 transition">
+
+    🛒
+
+    @if($cartCount > 0)
+
+    <span
+        class="absolute -top-2 -right-2
+               w-6 h-6 rounded-full
+               bg-orange-500
+               text-xs font-bold
+               flex items-center justify-center">
+
+        {{ $cartCount }}
+
+    </span>
+
+    @endif
+
+</a>
+
+@endauth
 
                     </nav>
 
@@ -124,30 +155,58 @@
 
                         @auth
 
-                            <div class="hidden md:flex flex-col text-right">
+                     <div class="relative group">
 
-                                <h4 class="font-semibold text-sm">
-                                    {{ auth()->user()->name }}
-                                </h4>
+    <button
+        class="px-4 py-2 rounded-2xl bg-white/5 border border-white/10">
 
-                                <p class="text-xs text-gray-400">
-                                    {{ auth()->user()->role }}
-                                </p>
+        👤 {{ auth()->user()->name }}
 
-                            </div>
+    </button>
 
-                            <form action="{{ route('logout') }}" method="POST">
+    <div
+        class="absolute right-0 mt-2 w-56
+               bg-[#121212]
+               border border-white/10
+               rounded-2xl
+               opacity-0 invisible
+               group-hover:opacity-100
+               group-hover:visible
+               transition">
 
-                                @csrf
+     <a href="{{ route('dashboard') }}"
+           class="block px-5 py-3 hover:bg-orange-500/10">
+            Dashboard
+        </a>
 
-                                <button
-                                    class="px-5 py-2.5 rounded-2xl bg-red-500 hover:bg-red-400 transition text-sm font-semibold">
+        <a href="{{ route('orders.index') }}"
+           class="block px-5 py-3 hover:bg-orange-500/10">
+            My Orders
+        </a>
 
-                                    Logout
+        <a href="{{ route('cart.index') }}"
+           class="block px-5 py-3 hover:bg-orange-500/10">
+            My Cart
+        </a>
 
-                                </button>
+        <form action="{{ route('logout') }}"
+              method="POST">
 
-                            </form>
+            @csrf
+
+            <button
+                class="w-full text-left px-5 py-3 hover:bg-red-500/10 text-red-400">
+
+                Logout
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
 
                         @endauth
 

@@ -10,25 +10,30 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // REGISTER
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
+public function register(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:100',
+        'email' => 'required|email|max:100|unique:users,email',
+        'password' => 'required|min:6|confirmed',
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => 'customer',
+    ]);
 
-        Auth::login($user);
+    Auth::login($user);
 
-        return redirect('/dashboard')->with('success', 'Register berhasil');
-    }
+    $request->session()->regenerate();
+
+    return redirect()
+        ->route('dashboard')
+        ->with('success', 'Register berhasil');
+}
+
 public function login(Request $request)
 {
     $credentials = $request->validate([

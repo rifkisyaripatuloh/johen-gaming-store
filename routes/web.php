@@ -13,7 +13,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
-
+use App\Http\Controllers\UserDashboardController;
 /*
 |--------------------------------------------------------------------------
 | ADMIN CONTROLLER
@@ -84,14 +84,19 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     | CART
     |--------------------------------------------------------------------------
     */
-
     Route::get('/cart', [CartController::class, 'index'])
         ->name('cart.index');
 
     Route::post('/cart', [CartController::class, 'store'])
         ->name('cart.store');
 
+    // ✅ MULTI CHECKOUT (HARUS POST)
+    Route::post('/cart/checkout-selected', [CartController::class, 'checkoutSelected'])
+        ->name('cart.checkout.selected');
+
+    // DELETE ITEM
     Route::delete('/cart/{id}', [CartController::class, 'destroy'])
+        ->whereNumber('id')
         ->name('cart.destroy');
 
     /*
@@ -100,21 +105,36 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/checkout/{slug}', [CheckoutController::class, 'index'])
-        ->name('checkout.index');
+    // Route::get('/checkout/{slug}', [CheckoutController::class, 'index'])
+//        ->name('checkout.index');
+// CHECKOUT view (hasil order)
+Route::get('/checkout/{order}', [CheckoutController::class, 'checkoutView'])
+    ->name('checkout.view');
 
-    Route::post('/checkout/process', [CheckoutController::class, 'process'])
-        ->name('checkout.process');
+Route::post('/checkout/process', [CheckoutController::class, 'process'])
+    ->name('checkout.process');
 
     /*
     |--------------------------------------------------------------------------
     | ORDERS
     |--------------------------------------------------------------------------
     */
+Route::get('/my-orders', [OrderController::class, 'index'])
+    ->name('orders.index');
 
-    Route::get('/orders', [OrderController::class, 'index'])
-        ->name('orders.index');
+Route::get('/dashboard', [UserDashboardController::class, 'index'])
+    ->name('dashboard');
 
+
+
+
+// PAYMENT
+Route::get('/payment/{order}', [CheckoutController::class, 'show'])
+    ->name('payment.show');
+    Route::post('/payment/{order}/confirm', [CheckoutController::class, 'confirmPayment'])
+    ->name('payment.confirm');
+    Route::post('/payment/{order}/paid', [CheckoutController::class, 'paid'])
+    ->name('payment.paid');
 });
 
 /*
@@ -177,7 +197,32 @@ Route::middleware(['auth', 'admin'])
 
         Route::resource('vouchers', VoucherController::class);
 
+
+        /*
+        |--------------------------------------------------------------------------
+        | cart
+        |--------------------------------------------------------------------------
+        */
+           Route::get('/cart', [CartController::class, 'index'])
+        ->name('cart.index');
+
+    Route::post('/cart', [CartController::class, 'store'])
+        ->name('cart.store');
+
+    Route::delete('/cart/{id}', [CartController::class, 'destroy'])
+        ->name('cart.destroy');
+
+   /*
+        |--------------------------------------------------------------------------
+        | payment
+        |--------------------------------------------------------------------------
+        */
+
+        
 });
+
+
+
 
 /*
 |--------------------------------------------------------------------------

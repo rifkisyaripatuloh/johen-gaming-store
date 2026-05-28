@@ -17,19 +17,42 @@ class ProductController extends Controller
     | LIST PRODUCT
     |--------------------------------------------------------------------------
     */
-    public function index()
-    {
-        $products = Product::with([
-                'category',
-                'packages',
-                'attributes'
-            ])
-            ->latest()
-            ->paginate(10);
+   public function index()
+{
+    $products = Product::with([
+            'category',
+            'packages',
+            'attributes'
+        ])
+        ->latest()
+        ->paginate(10);
 
-        return view('admin.products.index', compact('products'));
+    // AUTO STOCK ACCOUNT
+    foreach ($products as $product) {
+
+        if ($product->type === 'sell_account') {
+
+            $product->stock =
+                \App\Models\AccountDelivery::where(
+                    'product_id',
+                    $product->id
+                )
+                ->where('is_sent', false)
+                ->count();
+
+            // AUTO STATUS
+            $product->status =
+                $product->stock > 0
+                ? 'available'
+                : 'out_stock';
+        }
     }
 
+    return view(
+        'admin.products.index',
+        compact('products')
+    );
+}
     /*
     |--------------------------------------------------------------------------
     | CREATE
@@ -69,9 +92,7 @@ class ProductController extends Controller
     'price' => $request->type == 'sell_account'
         ? $request->price
         : 0,
-'stock' => $request->type == 'sell_account'
-        ? 1
-        : 0,
+'stock' => 0,
 
     'type' => $request->type,
     'description' => $request->description,

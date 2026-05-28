@@ -48,4 +48,9 @@ class Product extends Model
     {
         return $this->hasMany(GameAttribute::class);
     }
+
+    public function accounts()
+{
+    return $this->hasMany(AccountDelivery::class);
+}
 }

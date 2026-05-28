@@ -118,12 +118,12 @@
                         <label
                             class="relative cursor-pointer bg-[#121212] border border-white/10 rounded-3xl p-5 hover:border-orange-500 transition">
 
-                            <input
-                                type="radio"
-                                name="package_id"
-                                value="{{ $package->id }}"
-                                class="peer hidden"
-                            >
+                           <input
+    type="radio"
+    name="package_select"
+    value="{{ $package->id }}"
+    class="package-radio peer hidden"
+>
 
                             <div
                                 class="absolute inset-0 border-2 border-orange-500 rounded-3xl opacity-0 peer-checked:opacity-100">
@@ -242,15 +242,63 @@
                 <!-- BUTTON -->
                 <div class="mt-10 flex gap-4 flex-wrap">
 
-                    <button
-                        class="px-10 py-4 rounded-2xl bg-orange-500 hover:bg-orange-400 font-bold">
-                        Buy Now
-                    </button>
+   <form action="{{ route('checkout.process') }}"
+      method="POST"
+      id="buyNowForm">
 
-                    <button
-                        class="px-10 py-4 rounded-2xl border border-white/10 hover:border-orange-500">
-                        Add To Cart
-                    </button>
+    @csrf
+
+    <input type="hidden"
+           name="product_id"
+           value="{{ $product->id }}">
+
+    {{-- PACKAGE --}}
+    <input type="hidden"
+           name="package_id"
+           id="selectedPackage">
+
+    {{-- CUSTOMER --}}
+    <input type="hidden"
+           name="customer_name"
+           value="{{ auth()->user()->name }}">
+
+    <input type="hidden"
+           name="customer_phone"
+           value="0000000000">
+
+    {{-- PAYMENT --}}
+    <input type="hidden"
+           name="payment_method"
+           value="bank">
+
+    <button type="submit"
+        class="px-10 py-4 rounded-2xl bg-orange-500 hover:bg-orange-400 font-bold">
+
+        ⚡ Buy Now
+
+    </button>
+
+</form>
+
+                   <form action="{{ route('cart.store') }}"
+      method="POST">
+
+    @csrf
+
+    <input
+        type="hidden"
+        name="product_id"
+        value="{{ $product->id }}">
+
+    <button
+        type="submit"
+        class="px-10 py-4 rounded-2xl border border-white/10 hover:border-orange-500 hover:bg-orange-500/10 transition">
+
+        🛒 Add To Cart
+
+    </button>
+
+</form>
 
                 </div>
 
@@ -306,5 +354,25 @@
     </div>
 
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
 
+    const radios =
+        document.querySelectorAll('.package-radio');
+
+    const selectedPackage =
+        document.getElementById('selectedPackage');
+
+    radios.forEach(radio => {
+
+        radio.addEventListener('change', function () {
+
+            selectedPackage.value = this.value;
+
+        });
+
+    });
+
+});
+</script>
 @endsection
